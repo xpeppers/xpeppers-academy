@@ -5,6 +5,7 @@
   "main": "handler.js",
   "scripts": {
     "deploy": "serverless deploy",
+    "remove": "serverless remove",
     "start": "serverless offline"
   },
   "keywords": [],
