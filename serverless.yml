@@ -9,13 +9,11 @@ provider:
   name: aws
   runtime: nodejs8.10
   iamRoleStatements:
-    - Effect: Allow
+    - Effect: "Allow"
       Action:
-        - s3:*
+        - "s3:*"
       Resource:
-        - Fn::GetAtt:
-            - XpeppersAcademyBucket
-            - Arn
+        Fn::Join: ['', [Fn::GetAtt: [ XpeppersAcademyBucket, Arn ], '/*'] ]
 
 functions:
   save:
