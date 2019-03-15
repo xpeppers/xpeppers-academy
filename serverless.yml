@@ -16,6 +16,12 @@ functions:
       - http:
           path: /save
           method: post
+  read:
+    handler: handler.read
+    events:
+      - http:
+          path: /read
+          method: get
 
 resources:
   Resources:

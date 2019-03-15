@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.422.0",
+    "promise-filesystem": "^1.0.1",
     "serverless": "^1.38.0"
   },
   "devDependencies": {
