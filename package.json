@@ -1,0 +1,19 @@
+{
+  "name": "xpeppers-academy-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "start": "serverless offline"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "serverless": "^1.38.0"
+  },
+  "devDependencies": {
+    "serverless-offline": "^4.9.1"
+  }
+}

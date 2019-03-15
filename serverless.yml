@@ -1,0 +1,25 @@
+service: xpeppers-academy
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+functions:
+  save:
+    handler: handler.save
+    events:
+      - http:
+          path: /save
+          method: post
+
+resources:
+  Resources:
+    staticSite:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: xpeppers-academy
