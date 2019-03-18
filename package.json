@@ -6,7 +6,8 @@
   "scripts": {
     "deploy": "serverless deploy",
     "remove": "serverless remove",
-    "start": "serverless offline"
+    "start": "serverless offline",
+    "serverless": "serverless"
   },
   "keywords": [],
   "author": "",
