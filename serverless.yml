@@ -34,4 +34,4 @@ resources:
     XpeppersAcademyBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: xpeppers-academy
+        BucketName: academy.xpeppers.com

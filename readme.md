@@ -11,7 +11,7 @@ npm start
 
 # Deploy
 ```
-npm run deploy
+[AWS_PROFILE=[YOUR_PROFILE]] npm run deploy
 ```
 
 # Curl Example
