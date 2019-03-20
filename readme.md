@@ -6,7 +6,7 @@
 
 # Run locally
 ```
-npm start
+[AWS_PROFILE=[YOUR_PROFILE]] [RUN_LOCALLY=true] npm start
 ```
 
 # Deploy
