@@ -6,7 +6,7 @@
   "scripts": {
     "deploy": "serverless deploy",
     "remove": "serverless remove",
-    "start": "serverless offline",
+    "start": "RUN_LOCALLY=true serverless offline",
     "serverless": "serverless"
   },
   "keywords": [],

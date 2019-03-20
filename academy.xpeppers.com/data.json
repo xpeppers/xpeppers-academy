@@ -1,0 +1,16 @@
+{
+  "activities": [
+    {
+      "title": "Retrospettiva Trento",
+      "type": "facilitation",
+      "author": "IVO",
+      "date": "2019-03-15",
+      "links": [
+        {
+          "type": "wiki",
+          "url": "http://an.url"
+        }
+      ]
+    }
+  ]
+}
