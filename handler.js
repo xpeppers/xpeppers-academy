@@ -4,7 +4,7 @@ const aws = require('aws-sdk')
 const promiseFs = require('promise-filesystem')
 
 function fileSystem() {
-  return process.env.RUN_LOCALLY === 'true' ? promiseFs() : promiseFs(aws.s3)
+  return process.env.RUN_LOCALLY === 'true' ? promiseFs() : promiseFs(aws.S3)
 }
 
 module.exports.save = (event, context) => {
