@@ -7,36 +7,40 @@ function fileSystem() {
   return process.env.RUN_LOCALLY === 'true' ? promiseFs() : promiseFs(aws.S3)
 }
 
-module.exports.save = (event, context) => {
-  const fs = fileSystem()
-
-  // TODO: read body object as JSON
-  // TODO: save object (validated?) to s3
-
-  // Object to append to activities properties:
-  // {"title":"Retrospettiva Trento","type":"facilitation","author":"IVO","date":"2019-03-08","links":[{"type":"wiki","url":"https://an.url"}]}
-
-  return fs.read('academy.xpeppers.com', 'data.json')
-  .then((response) => {
-    let data = JSON.parse((response.Body) ? response.Body.toString() : '')
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify(data),
-    }
-  })
-  .catch(console.log)
+function extractData(document) {
+  return (document.Body) ? document.Body.toString() : []
 }
 
-module.exports.read = (event, context) => {
-  const fs = fileSystem()
+function readFile() {
+  return fileSystem().read('academy.xpeppers.com', 'data.json').then(extractData)
+}
 
-  return fs.read('academy.xpeppers.com', 'data.json')
-  .then((response) => {
-    return {
-      statusCode: 200,
-      body: (response.Body) ? response.Body.toString() : '',
-    }
+function asJson(data) {
+  return JSON.parse(data)
+}
+
+function error(err) {
+  return { statusCode: 500, body: err}
+}
+
+function ok(data) {
+  return { statusCode: 200, body: data }
+}
+
+module.exports.save = (event) => {  
+  return readFile()
+  .then(asJson)
+  .then((data) => {
+    data.push(JSON.parse(event.body))
+    return fileSystem().write('academy.xpeppers.com', 'data.json', JSON.stringify(data))
+      .then(() => '')
   })
-  .catch(console.log)
+  .then(ok)
+  .catch(error)
+}
+
+module.exports.read = () => {
+  return readFile()
+  .then(ok)
+  .catch(error)
 }
