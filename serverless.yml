@@ -22,12 +22,14 @@ functions:
       - http:
           path: /save
           method: post
+          cors: true
   read:
     handler: handler.read
     events:
       - http:
           path: /read
           method: get
+          cors: true
 
 resources:
   Resources:

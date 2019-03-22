@@ -20,11 +20,11 @@ function asJson(data) {
 }
 
 function error(err) {
-  return { statusCode: 500, body: err}
+  return { statusCode: 500, body: err, headers: { 'Access-Control-Allow-Origin': '*' }}
 }
 
 function ok(data) {
-  return { statusCode: 200, body: data }
+  return { statusCode: 200, body: data, headers: { 'Access-Control-Allow-Origin': '*' }}
 }
 
 module.exports.save = (event) => {  
