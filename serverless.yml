@@ -21,7 +21,7 @@ functions:
     events:
       - http:
           path: /save
-          method: post
+          method: any
           cors: true
   read:
     handler: handler.read
