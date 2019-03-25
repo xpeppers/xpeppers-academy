@@ -7,6 +7,7 @@
     "deploy": "serverless deploy",
     "remove": "serverless remove",
     "start": "RUN_LOCALLY=true serverless offline",
+    "logs": "serverless logs",
     "serverless": "serverless"
   },
   "keywords": [],

@@ -5,6 +5,7 @@
 - Configure AWS account to your PC
 
 # Run locally
+You have to use AWS_PROFILE env variable when your AWS account is not set as `default`
 ```
 [AWS_PROFILE=[YOUR_PROFILE]] [RUN_LOCALLY=true] npm start
 ```
@@ -12,6 +13,16 @@
 # Deploy
 ```
 [AWS_PROFILE=[YOUR_PROFILE]] npm run deploy
+```
+
+# Logs
+```
+[AWS_PROFILE=[YOUR_PROFILE]] npm run logs -- -f [FUNCTION_NAME] [-t] [--startTime [TIME]]
+
+es:
+[AWS_PROFILE=[YOUR_PROFILE]] npm run logs -- -f save -t --startTime 30m
+[AWS_PROFILE=[YOUR_PROFILE]] npm run logs -- -f read -t --startTime 3d
+[AWS_PROFILE=[YOUR_PROFILE]] npm run logs -- -f read -t --startTime 3d
 ```
 
 # Curl Example

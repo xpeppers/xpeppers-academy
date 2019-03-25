@@ -27,7 +27,7 @@ function ok(data) {
   return { statusCode: 200, body: data, headers: {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': true,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Credentials': true
   }}
 }
