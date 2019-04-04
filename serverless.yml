@@ -30,7 +30,13 @@ functions:
           path: /read
           method: get
           cors: true
-
+  delete:
+    handler: handler.delete
+    events:
+      - http:
+          path: /delete
+          method: post
+          cors: true        
 resources:
   Resources:
     XpeppersAcademyBucket:

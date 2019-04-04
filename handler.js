@@ -11,8 +11,22 @@ function extractData(document) {
   return (document.Body) ? document.Body.toString() : []
 }
 
-function readFile() {
+function readActivities() {
   return fileSystem().read('academy.xpeppers.com', 'data.json').then(extractData)
+}
+
+function saveActivities(data) {
+  return fileSystem().write('academy.xpeppers.com', 'data.json', JSON.stringify(data))
+      .then(() => '')
+}
+
+function isNot(activityToDelete) {
+  return (activity) => {
+    return !(activityToDelete.date === activity.date &&
+          activityToDelete.author === activity.author &&
+          activityToDelete.title === activity.title &&
+          activityToDelete.type === activity.type)
+  }
 }
 
 function asJson(data) {
@@ -33,21 +47,32 @@ function ok(data) {
 }
 
 module.exports.save = (event) => {
-  return readFile()
+  return readActivities()
   .then(asJson)
   .then((data) => {
     if (!event.body) return
 
     data.push(JSON.parse(event.body))
-    return fileSystem().write('academy.xpeppers.com', 'data.json', JSON.stringify(data))
-      .then(() => '')
+    return saveActivities(data)
   })
   .then(ok)
   .catch(error)
 }
 
 module.exports.read = () => {
-  return readFile()
+  return readActivities()
   .then(ok)
+  .catch(error)
+}
+
+module.exports.delete = (event) => {
+  return readActivities()
+  .then(asJson)
+  .then((data) => {
+    if (!event.body) return
+    let activity = JSON.parse(event.body)
+
+    return saveActivities(data.filter(isNot(activity)))
+  })
   .catch(error)
 }
