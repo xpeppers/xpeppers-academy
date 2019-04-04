@@ -74,5 +74,6 @@ module.exports.delete = (event) => {
 
     return saveActivities(data.filter(isNot(activity)))
   })
+  .then(ok)
   .catch(error)
 }
