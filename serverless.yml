@@ -36,10 +36,33 @@ functions:
       - http:
           path: /delete
           method: post
-          cors: true        
+          cors: true
 resources:
   Resources:
     XpeppersAcademyBucket:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: academy.xpeppers.com
+        CorsConfiguration:
+          CorsRules:
+            - AllowedMethods:
+                - GET
+                - HEAD
+              AllowedOrigins:
+                - "*"
+              AllowedHeaders:
+                - "*"
+    XpeppersAcademyBucketPolicy:
+      Type: 'AWS::S3::BucketPolicy'
+      Properties:
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action:
+                - "s3:GetObject"
+              Resource:
+                Fn::Join: ['', [Fn::GetAtt: [ XpeppersAcademyBucket, Arn ], '/*'] ]
+        Bucket:
+          Ref: XpeppersAcademyBucket
