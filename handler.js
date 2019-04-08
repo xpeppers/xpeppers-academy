@@ -2,6 +2,12 @@
 
 const aws = require('aws-sdk')
 const promiseFs = require('promise-filesystem')
+const HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': true,
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Credentials': true
+}
 
 function fileSystem() {
   return process.env.RUN_LOCALLY === 'true' ? promiseFs() : promiseFs(aws.S3)
@@ -34,16 +40,11 @@ function asJson(data) {
 }
 
 function error(err) {
-  return { statusCode: 500, body: err, headers: { 'Access-Control-Allow-Origin': '*' }}
+  return { statusCode: 500, body: err, headers: HEADERS}
 }
 
 function ok(data) {
-  return { statusCode: 200, body: data, headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': true,
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Credentials': true
-  }}
+  return { statusCode: 200, body: data, headers: HEADERS}
 }
 
 module.exports.save = (event) => {
