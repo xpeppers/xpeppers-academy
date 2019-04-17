@@ -1,0 +1,46 @@
+body {
+    padding-top: 5rem;
+}
+
+.starter-template {
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+.navbar {
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+}
+
+a, .navbar-light .navbar-brand {
+    color: #d9002a;
+}
+
+.logo {
+    height: 30px;
+}
+
+.nav li {
+    min-width: 120px;
+    border: 1px solid #ddd;
+}
+
+.nav li.active {
+    background-color: #d9002a;
+}
+
+.nav li.active a {
+    color: white;
+}
+
+.date {
+    width: 115px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) { 
+    background-color: #fbfbfb;
+}
+
+form {
+    background-color: #fbfbfb;
+}
