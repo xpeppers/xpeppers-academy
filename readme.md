@@ -4,10 +4,21 @@
 - Install all dependencies with `npm install && cd frontend && npm install && cd ..`
 - Configure AWS account to your PC
 
-# Run locally
-You have to use AWS_PROFILE env variable when your AWS account is not set as `default`
+**NB:** You have to use AWS_PROFILE env variable when your AWS account is not set as `default`
+
+# Run Backend locally
 ```
-[AWS_PROFILE=[YOUR_PROFILE]] [RUN_LOCALLY=true] npm start
+[AWS_PROFILE=[YOUR_PROFILE]] npm start
+```
+
+# Run Frontend locally
+```
+cd frontend && npm start
+```
+
+# Run Both locally
+```
+npm run start:all
 ```
 
 # Deploy Backend
