@@ -8,7 +8,7 @@
     "deploy:api": "serverless deploy",
     "deploy:gui": "cd frontend && npm run deploy:s3",
     "remove": "serverless remove --force",
-    "start": "RUN_LOCALLY=true serverless offline",
+    "start": "RUN_LOCALLY=true serverless offline & cd frontend && npm start",
     "logs": "serverless logs",
     "serverless": "serverless"
   },

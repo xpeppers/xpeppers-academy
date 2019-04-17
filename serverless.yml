@@ -7,6 +7,8 @@ plugins:
 
 custom:
   bucketName: academy.xpeppers.com
+  serverless-offline:
+    port: 8080
 
 provider:
   name: aws
