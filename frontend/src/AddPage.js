@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Menu from './Menu'
 import axios from 'axios'
 import { withRouter } from "react-router-dom"
+import { apiBaseUrl } from './lib/configuration'
 
 class ListPage extends Component {
     constructor(props) {
@@ -41,7 +42,7 @@ class ListPage extends Component {
     submit(event) {
         event.preventDefault()
 
-        axios.post(`https://3ehy0jf96k.execute-api.us-east-1.amazonaws.com/dev/save`, this.state)
+        axios.post(`${apiBaseUrl}/save`, this.state)
             .then(() => {
               //TODO: ok response
               this.props.activityAdded(this.state)

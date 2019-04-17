@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Menu from './Menu';
 import axios from 'axios'
+import { apiBaseUrl } from './lib/configuration'
 
 class ListPage extends Component {
   links(index, links) {
@@ -16,7 +17,7 @@ class ListPage extends Component {
     return (event) => {
       event.preventDefault()
 
-      axios.post(`https://3ehy0jf96k.execute-api.us-east-1.amazonaws.com/dev/delete`, activity)
+      axios.post(`${apiBaseUrl}/delete`, activity)
         .then(() => {
           this.props.activityDeleted(activity)
         })
