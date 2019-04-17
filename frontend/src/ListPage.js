@@ -16,7 +16,7 @@ class ListPage extends Component {
     return (event) => {
       event.preventDefault()
 
-      axios.post(`https://539bk9ow41.execute-api.us-east-1.amazonaws.com/dev/delete`, activity)
+      axios.post(`https://3ehy0jf96k.execute-api.us-east-1.amazonaws.com/dev/delete`, activity)
         .then(() => {
           this.props.activityDeleted(activity)
         })

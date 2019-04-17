@@ -5,9 +5,14 @@ frameworkVersion: ">=1.1.0 <2.0.0"
 plugins:
   - serverless-offline
 
+custom:
+  bucketName: academy.xpeppers.com
+
 provider:
   name: aws
   runtime: nodejs8.10
+  environment:
+    BUCKET_NAME: ${self:custom.bucketName}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -42,7 +47,10 @@ resources:
     XpeppersAcademyBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: academy.xpeppers.com
+        BucketName: ${self:custom.bucketName}
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
         CorsConfiguration:
           CorsRules:
             - AllowedMethods:

@@ -9,24 +9,28 @@ const HEADERS = {
   'Access-Control-Allow-Credentials': true
 }
 
-function fileSystem() {
+function bucket () {
+  return process.env.BUCKET_NAME;
+}
+
+function fileSystem () {
   return process.env.RUN_LOCALLY === 'true' ? promiseFs() : promiseFs(aws.S3)
 }
 
-function extractData(document) {
+function extractData (document) {
   return (document.Body) ? document.Body.toString() : []
 }
 
-function readActivities() {
-  return fileSystem().read('academy.xpeppers.com', 'data.json').then(extractData)
+function readActivities () {
+  return fileSystem().read(bucket(), 'data.json').then(extractData)
 }
 
-function saveActivities(data) {
-  return fileSystem().write('academy.xpeppers.com', 'data.json', JSON.stringify(data))
+function saveActivities (data) {
+  return fileSystem().write(bucket(), 'data.json', JSON.stringify(data))
       .then(() => '')
 }
 
-function isNot(activityToDelete) {
+function isNot (activityToDelete) {
   return (activity) => {
     return !(activityToDelete.date === activity.date &&
           activityToDelete.author === activity.author &&
@@ -35,15 +39,15 @@ function isNot(activityToDelete) {
   }
 }
 
-function asJson(data) {
+function asJson (data) {
   return JSON.parse(data)
 }
 
-function error(err) {
+function error (err) {
   return { statusCode: 500, body: err, headers: HEADERS}
 }
 
-function ok(data) {
+function ok (data) {
   return { statusCode: 200, body: data, headers: HEADERS}
 }
 

@@ -14,7 +14,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(`https://539bk9ow41.execute-api.us-east-1.amazonaws.com/dev/read`)
+    axios.get(`https://3ehy0jf96k.execute-api.us-east-1.amazonaws.com/dev/read`)
       .then(res => {
         const activity = res.data
         this.setState({ activities: activity })

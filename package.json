@@ -4,8 +4,10 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "deploy": "serverless deploy",
-    "remove": "serverless remove",
+    "deploy": "npm run deploy:api && npm run deploy:gui",
+    "deploy:api": "serverless deploy",
+    "deploy:gui": "cd frontend && npm run deploy:s3",
+    "remove": "serverless remove --force",
     "start": "RUN_LOCALLY=true serverless offline",
     "logs": "serverless logs",
     "serverless": "serverless"
@@ -18,7 +20,7 @@
     "promise-filesystem": "^1.0.1"
   },
   "devDependencies": {
-    "serverless-offline": "^4.9.1",
-    "serverless": "^1.38.0"
+    "serverless": "^1.40.0",
+    "serverless-offline": "^4.9.1"
   }
 }

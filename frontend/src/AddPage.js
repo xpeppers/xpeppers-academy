@@ -41,7 +41,7 @@ class ListPage extends Component {
     submit(event) {
         event.preventDefault()
 
-        axios.post(`https://539bk9ow41.execute-api.us-east-1.amazonaws.com/dev/save`, this.state)
+        axios.post(`https://3ehy0jf96k.execute-api.us-east-1.amazonaws.com/dev/save`, this.state)
             .then(() => {
               //TODO: ok response
               this.props.activityAdded(this.state)
