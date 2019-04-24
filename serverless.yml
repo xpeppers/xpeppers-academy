@@ -107,7 +107,7 @@ resources:
               QueryString: 'true'
               Cookies:
                 Forward: none
-            ViewerProtocolPolicy: https-only
+            ViewerProtocolPolicy: redirect-to-https
           PriceClass: PriceClass_200
           ViewerCertificate:
             AcmCertificateArn: ${self:custom.certificateArn}
