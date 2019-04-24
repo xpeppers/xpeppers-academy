@@ -7,12 +7,14 @@ plugins:
 
 custom:
   bucketName: academy.xpeppers.com
+  certificateArn: arn:aws:acm:us-east-1:422553113847:certificate/40271fd2-1c32-46ab-9860-c33463db2f20
   serverless-offline:
     port: 8080
 
 provider:
   name: aws
   runtime: nodejs8.10
+  region: eu-west-1
   environment:
     BUCKET_NAME: ${self:custom.bucketName}
   iamRoleStatements:
@@ -76,3 +78,37 @@ resources:
                 Fn::Join: ['', [Fn::GetAtt: [ XpeppersAcademyBucket, Arn ], '/*'] ]
         Bucket:
           Ref: XpeppersAcademyBucket
+    CDNMedia:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Aliases:
+            - ${self:custom.bucketName}
+          Origins:
+            - DomainName: ${self:custom.bucketName}.s3.amazonaws.com
+              Id: myS3Origin
+              S3OriginConfig: {}
+          Enabled: 'true'
+          DefaultRootObject: index.html
+          DefaultCacheBehavior:
+            MaxTTL: 0
+            MinTTL: 0
+            DefaultTTL: 0
+            AllowedMethods:
+            - DELETE
+            - GET
+            - HEAD
+            - OPTIONS
+            - PATCH
+            - POST
+            - PUT
+            TargetOriginId: myS3Origin
+            ForwardedValues:
+              QueryString: 'true'
+              Cookies:
+                Forward: none
+            ViewerProtocolPolicy: https-only
+          PriceClass: PriceClass_200
+          ViewerCertificate:
+            AcmCertificateArn: ${self:custom.certificateArn}
+            SslSupportMethod: sni-only
