@@ -6,7 +6,8 @@ plugins:
   - serverless-offline
 
 custom:
-  bucketName: academy.xpeppers.com
+  domainName: xpeppers.com
+  bucketName: academy.${self:custom.domainName}
   certificateArn: arn:aws:acm:us-east-1:422553113847:certificate/40271fd2-1c32-46ab-9860-c33463db2f20
   serverless-offline:
     port: 8080
@@ -78,7 +79,7 @@ resources:
                 Fn::Join: ['', [Fn::GetAtt: [ XpeppersAcademyBucket, Arn ], '/*'] ]
         Bucket:
           Ref: XpeppersAcademyBucket
-    CDNMedia:
+    CDNXPeppersAcademy:
       Type: AWS::CloudFront::Distribution
       Properties:
         DistributionConfig:
@@ -112,3 +113,13 @@ resources:
           ViewerCertificate:
             AcmCertificateArn: ${self:custom.certificateArn}
             SslSupportMethod: sni-only
+    DNSXPeppersAcademy:
+      Type: AWS::Route53::RecordSet
+      Properties:
+        HostedZoneName: ${self:custom.domainName}.
+        Name: ${self:custom.bucketName}
+        Type: A
+        AliasTarget:
+          DNSName:
+            Fn::GetAtt: [ CDNXPeppersAcademy, DomainName ]
+          HostedZoneId: Z2FDTNDATAQYW2
