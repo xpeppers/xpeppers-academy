@@ -4,11 +4,18 @@ frameworkVersion: ">=1.1.0 <2.0.0"
 
 plugins:
   - serverless-offline
+  - serverless-domain-manager
 
 custom:
   domainName: xpeppers.com
   bucketName: academy.${self:custom.domainName}
-  certificateArn: arn:aws:acm:us-east-1:422553113847:certificate/40271fd2-1c32-46ab-9860-c33463db2f20
+  certificateArn: arn:aws:acm:us-east-1:422553113847:certificate/d0e729a4-ce28-461b-aabe-9c6f95414bc2
+  customDomain:
+    domainName: api.academy.xpeppers.com
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+    certificateArn: ${self:custom.certificateArn}
   serverless-offline:
     port: 8080
 

@@ -23,6 +23,7 @@ npm run start:all
 
 # Deploy Backend
 ```
+[AWS_PROFILE=[YOUR_PROFILE]] npm run deploy:first
 [AWS_PROFILE=[YOUR_PROFILE]] npm run deploy:api
 ```
 
