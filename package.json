@@ -8,7 +8,7 @@
     "deploy:first": "serverless create_domain",
     "deploy": "npm run deploy:api && npm run deploy:gui",
     "deploy:api": "serverless deploy",
-    "deploy:gui": "cd frontend && npm run deploy:s3",
+    "deploy:gui": "cd frontend && npm run build && npm run deploy:s3",
     "remove": "serverless remove --force; serverless delete_domain",
     "start:api": "RUN_LOCALLY=true serverless offline",
     "start:gui": "cd frontend && npm run serve",
