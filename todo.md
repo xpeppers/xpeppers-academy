@@ -1,5 +1,6 @@
 # TODO
 
+- [] fixes url redirect on reload page (react+s3 problem)
 - [] Search presentation by title, type and author
 - [] Some sort of authentication
 - [] Author is a User
