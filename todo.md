@@ -1,7 +1,5 @@
 # TODO
 
-- [\*] Correct Domain Name
-- [] Dropdown list for activity type
 - [] Search presentation by title, type and author
 - [] Some sort of authentication
 - [] Author is a User

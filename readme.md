@@ -1,24 +1,19 @@
 # XPeppers Academy
 
 # Setup
-- Install all dependencies with `npm install && cd frontend && npm install && cd ..`
+- Install all dependencies with `npm run install:all`
 - Configure AWS account to your PC
 
 **NB:** You have to use AWS_PROFILE env variable when your AWS account is not set as `default`
 
 # Run Backend locally
 ```
-[AWS_PROFILE=[YOUR_PROFILE]] npm start
+npm run start:api
 ```
 
 # Run Frontend locally
 ```
-cd frontend && npm start
-```
-
-# Run Both locally
-```
-npm run start:all
+npm run start:gui
 ```
 
 # Deploy Backend

@@ -4,13 +4,14 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
+    "install:all": "npm install && cd frontend && npm install",
     "deploy:first": "serverless create_domain",
     "deploy": "npm run deploy:api && npm run deploy:gui",
     "deploy:api": "serverless deploy",
     "deploy:gui": "cd frontend && npm run deploy:s3",
     "remove": "serverless remove --force; serverless delete_domain",
-    "start": "RUN_LOCALLY=true serverless offline",
-    "start:all": "npm run start & cd frontend && npm run serve",
+    "start:api": "RUN_LOCALLY=true serverless offline",
+    "start:gui": "cd frontend && npm run serve",
     "logs": "serverless logs",
     "serverless": "serverless"
   },

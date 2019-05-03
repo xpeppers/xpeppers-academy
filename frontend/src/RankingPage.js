@@ -13,8 +13,14 @@ function pointsOf(authorActivities) {
     if(currentActivity.date === '') {
       return points
     }
-    currentActivity.type === 'presentation' ? points+=3 : points++
-    return points
+    
+    var types = {
+      'facilitation': 1,
+      'presentation': 3,
+      'conference': 5
+    }
+
+    return points + types[currentActivity.type]
   }, 0)
 }
 

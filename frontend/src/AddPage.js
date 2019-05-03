@@ -8,7 +8,7 @@ class ListPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            links: [{url: "http://an.url", type: "submission"}]
+            links: [{url: "http://an.url", type: "wiki"}]
         }
     }
 
@@ -67,7 +67,11 @@ class ListPage extends Component {
                     </div>
                     <div className="form-group">
                         <label htmlFor="type">Type</label>
-                        <input type="text" onChange={this.change("type")} className="form-control" placeholder="Type" />
+                        <select onChange={this.change("type")} className="form-control">
+                            <option value="facilitation">facilitation</option>
+                            <option value="presentation">presentation</option>
+                            <option value="conference">conference</option>
+                        </select>
                     </div>
                     <div className="form-group">
                         <label htmlFor="title">Title</label>
