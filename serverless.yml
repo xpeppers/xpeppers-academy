@@ -63,6 +63,14 @@ resources:
         AccessControl: PublicRead
         WebsiteConfiguration:
           IndexDocument: index.html
+          RoutingRules:
+            - RedirectRule:
+                HostName: ${self:custom.bucketName}
+                Protocol: https
+                HttpRedirectCode: 307
+                ReplaceKeyPrefixWith: "?p="
+              RoutingRuleCondition:
+                HttpErrorCodeReturnedEquals: 404
         CorsConfiguration:
           CorsRules:
             - AllowedMethods:

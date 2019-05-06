@@ -1,6 +1,8 @@
 # TODO
 
-- [] fixes url redirect on reload page (react+s3 problem)
+- [\*] fixes url redirect on reload page (react+s3 problem)
+    - [\*] from s3 url it works
+    - [] from academy.xpeppers.com it doesn't work
 - [] Search presentation by title, type and author
 - [] Some sort of authentication
 - [] Author is a User
