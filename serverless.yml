@@ -101,9 +101,11 @@ resources:
           Aliases:
             - ${self:custom.bucketName}
           Origins:
-            - DomainName: ${self:custom.bucketName}.s3.amazonaws.com
+            - DomainName: ${self:custom.bucketName}.s3-website-eu-west-1.amazonaws.com
               Id: myS3Origin
-              S3OriginConfig: {}
+              CustomOriginConfig:
+                HTTPPort: '80'
+                OriginProtocolPolicy: http-only
           Enabled: 'true'
           DefaultRootObject: index.html
           DefaultCacheBehavior:
