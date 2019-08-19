@@ -8,6 +8,7 @@ class ListPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            type: 'facilitation',
             links: [{url: "http://an.url", type: "wiki"}]
         }
     }

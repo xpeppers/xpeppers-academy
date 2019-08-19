@@ -1,6 +1,5 @@
 # TODO
 
-- [] Fixes selection of type presentation
 - [] Search presentation by title, type and author
 - [] Some sort of authentication
 - [] Author is a User
