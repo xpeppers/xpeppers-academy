@@ -11,15 +11,17 @@ import { apiBaseUrl } from './lib/configuration'
 
 class App extends React.Component {
   state = {
+    filtered: [],
     activities: []
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    this.getActivities()
+  }
+
+  getActivities() {
     axios.get(`${apiBaseUrl}/read`)
-      .then(res => {
-        const activity = res.data
-        this.setState({ activities: activity })
-      })
+      .then(({data}) => this.setState({ activities: data, filtered: data }))
   }
 
   isNot(activityToDelete) {
@@ -31,19 +33,31 @@ class App extends React.Component {
     }
   }
 
+  searchActivities(text) {
+    this.setState({filtered: this.state.activities.filter(this.hasTitleOrAuthorOrTypeContaining(text))})
+  }
+
+  hasTitleOrAuthorOrTypeContaining(text) {
+    return (activity) => {
+      return (activity.title && activity.title.toLowerCase().includes(text.toLowerCase())) ||
+             (activity.author && activity.author.toLowerCase().includes(text.toLowerCase())) ||
+             (activity.type && activity.type.toLowerCase().includes(text.toLowerCase()))
+    }
+  }
+
   activityDeleted(activity) {
-    this.setState({ activities: this.state.activities.filter(this.isNot(activity)) })
+    this.setState({ activities: this.state.activities.filter(this.isNot(activity)), filtered: this.state.activities.filter(this.isNot(activity)) })
   }
 
   activityAdded(activity) {
-    this.setState({ activities: [...this.state.activities, activity] })
+    this.setState({ activities: [...this.state.activities, activity], filtered: [...this.state.activities, activity] })
   }
 
   render() {
     return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
           <div className='router a1'>
-              <Route exact path="/" render={() => <ListPage activityDeleted={this.activityDeleted.bind(this)} activities={this.state.activities}/>}/>
+              <Route exact path="/" render={() => <ListPage activityDeleted={this.activityDeleted.bind(this)} searchActivities={this.searchActivities.bind(this)} activities={this.state.filtered}/>}/>
               <Route exact path="/ranking" render={() => <RankingPage activities={this.state.activities}/>} />
               <Route exact path="/add" render={() => <AddPage activityAdded={this.activityAdded.bind(this)} activities={this.state.activities}/>} />
           </div>

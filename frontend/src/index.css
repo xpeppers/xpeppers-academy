@@ -37,10 +37,15 @@ a, .navbar-light .navbar-brand {
     width: 115px;
 }
 
-.table-striped tbody tr:nth-of-type(odd) { 
+.table-striped tbody tr:nth-of-type(odd) {
     background-color: #fbfbfb;
 }
 
 form {
     background-color: #fbfbfb;
+}
+
+.searchInput {
+  width: 90%;
+  margin: 0.3rem 0;
 }

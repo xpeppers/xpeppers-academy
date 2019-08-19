@@ -4,6 +4,11 @@ import axios from 'axios'
 import { apiBaseUrl } from './lib/configuration'
 
 class ListPage extends Component {
+
+  componentWillMount() {
+    this.props.searchActivities('')
+  }
+
   links(index, links) {
     return links
     .map((link, link_index) => <a key={'link' + index + link_index} href={link.url}>{link.type}</a>)
@@ -25,6 +30,13 @@ class ListPage extends Component {
     }
   }
 
+  searchActivities() {
+    return (event) => {
+      event.preventDefault()
+      this.props.searchActivities(event.target.value)
+    }
+  }
+
   render() {
     return (
       <div>
@@ -42,6 +54,11 @@ class ListPage extends Component {
               </tr>
             </thead>
             <tbody>
+              <tr key="search">
+                <th colSpan="6">
+                  <input className="searchInput" type="text" onChange={this.searchActivities().bind(this)} placeholder="Search Title, Author or Type" />
+                </th>
+              </tr>
             {this.props.activities.sort((a, b) => a.date < b.date ? 1 : -1).map((activity, index) =>
               <tr key={'activity' + index}>
                 <td>{activity.date}</td>

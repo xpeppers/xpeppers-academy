@@ -1,6 +1,5 @@
 # TODO
 
-- [] Search presentation by title, type and author
 - [] Some sort of authentication
 - [] Author is a User
 - [] Adds "Sips" Video new section
