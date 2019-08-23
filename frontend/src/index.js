@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import ListPage from './ListPage'
@@ -9,22 +9,19 @@ import { Route, BrowserRouter } from 'react-router-dom'
 import axios from 'axios'
 import { apiBaseUrl } from './lib/configuration'
 
-class App extends React.Component {
-  state = {
-    filtered: [],
-    activities: []
-  }
+const App = () => {
+  const [activities, setActivities] = useState([])
+  const [filtered, setFiltered] = useState([])
 
-  componentWillMount() {
-    this.getActivities()
-  }
-
-  getActivities() {
+  const getActivities = () => {
     axios.get(`${apiBaseUrl}/read`)
-      .then(({data}) => this.setState({ activities: data, filtered: data }))
+      .then(({data}) => {
+        setActivities(data)
+        setFiltered(data)
+      })
   }
 
-  isNot(activityToDelete) {
+  function isNot(activityToDelete) {
     return (activity) => {
       return !(activityToDelete.date === activity.date &&
             activityToDelete.author === activity.author &&
@@ -33,11 +30,11 @@ class App extends React.Component {
     }
   }
 
-  searchActivities(text) {
-    this.setState({filtered: this.state.activities.filter(this.hasTitleOrAuthorOrTypeContaining(text))})
+  function searchActivities(text) {
+    setFiltered(activities.filter(hasTitleOrAuthorOrTypeContaining(text)))
   }
 
-  hasTitleOrAuthorOrTypeContaining(text) {
+  function hasTitleOrAuthorOrTypeContaining(text) {
     return (activity) => {
       return (activity.title && activity.title.toLowerCase().includes(text.toLowerCase())) ||
              (activity.author && activity.author.toLowerCase().includes(text.toLowerCase())) ||
@@ -45,25 +42,29 @@ class App extends React.Component {
     }
   }
 
-  activityDeleted(activity) {
-    this.setState({ activities: this.state.activities.filter(this.isNot(activity)), filtered: this.state.activities.filter(this.isNot(activity)) })
+  function activityDeleted(activity) {
+    setActivities(activities.filter(isNot(activity)))
+    setFiltered(activities.filter(isNot(activity)))
   }
 
-  activityAdded(activity) {
-    this.setState({ activities: [...this.state.activities, activity], filtered: [...this.state.activities, activity] })
+  function activityAdded(activity) {
+    setActivities([...activities, activity])
+    setFiltered([...activities, activity])
   }
 
-  render() {
-    return (
+  useEffect(() => {
+    getActivities()
+  }, [])
+
+  return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
           <div className='router a1'>
-              <Route exact path="/" render={() => <ListPage activityDeleted={this.activityDeleted.bind(this)} searchActivities={this.searchActivities.bind(this)} activities={this.state.filtered}/>}/>
-              <Route exact path="/ranking" render={() => <RankingPage activities={this.state.activities}/>} />
-              <Route exact path="/add" render={() => <AddPage activityAdded={this.activityAdded.bind(this)} activities={this.state.activities}/>} />
+              <Route exact path="/" render={() => <ListPage activityDeleted={activityDeleted} searchActivities={searchActivities} activities={filtered}/>}/>
+              <Route exact path="/ranking" render={() => <RankingPage activities={activities}/>} />
+              <Route exact path="/add" render={() => <AddPage activityAdded={activityAdded} activities={activities}/>} />
           </div>
       </BrowserRouter>
     )
-  }
 }
 
 ReactDOM.render(<App />, document.getElementById('root'))
