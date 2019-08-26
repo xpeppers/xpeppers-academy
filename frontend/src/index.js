@@ -6,16 +6,15 @@ import RankingPage from './RankingPage'
 import AddPage from './AddPage'
 import * as serviceWorker from './serviceWorker'
 import { Route, BrowserRouter } from 'react-router-dom'
-import axios from 'axios'
-import { apiBaseUrl } from './lib/configuration'
+import { listActivities } from './lib/activity-repository'
 
 const App = () => {
   const [activities, setActivities] = useState([])
   const [filtered, setFiltered] = useState([])
 
   const getActivities = () => {
-    axios.get(`${apiBaseUrl}/read`)
-      .then(({data}) => {
+    listActivities()
+      .then((data) => {
         setActivities(data)
         setFiltered(data)
       })

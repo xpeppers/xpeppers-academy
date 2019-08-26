@@ -1,6 +1,7 @@
 # TODO
 
 - [] Some sort of authentication
+- [] Calendar for date in Add Item form
 - [] Author is a User
 - [] Adds "Sips" Video new section
 - [] Adds Courses new section
