@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React, { useEffect, Component } from 'react';
 import Menu from './Menu';
-import axios from 'axios'
-import { apiBaseUrl } from './lib/configuration'
+import { deleteActivity } from './lib/activity-repository'
 
-class ListPage extends Component {
+const ListPage = (props) => {
 
-  componentWillMount() {
-    this.props.searchActivities('')
-  }
+  useEffect(() => {
+    props.searchActivities('')
+  }, [])
 
-  links(index, links) {
+  const links = (index, links) => {
     return links
     .map((link, link_index) => <a key={'link' + index + link_index} href={link.url}>{link.type}</a>)
     .reduce((acc, prev) => {
@@ -18,67 +17,65 @@ class ListPage extends Component {
     }, "")
   }
 
-  delete(activity) {
+  const del = (activity) => {
     return (event) => {
       event.preventDefault()
 
-      axios.post(`${apiBaseUrl}/delete`, activity)
+      deleteActivity(activity)
         .then(() => {
-          this.props.activityDeleted(activity)
+          props.activityDeleted(activity)
         })
         .catch(console.log)
     }
   }
 
-  searchActivities() {
+  const searchActivities = () => {
     return (event) => {
       event.preventDefault()
-      this.props.searchActivities(event.target.value)
+      props.searchActivities(event.target.value)
     }
   }
 
-  render() {
-    return (
-      <div>
-        <Menu selected="list"></Menu>
-        <div className="table-responsive">
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col" className="date">Date</th>
-                <th scope="col">Author</th>
-                <th scope="col">Type</th>
-                <th scope="col">Title</th>
-                <th scope="col">Links</th>
-                <th scope="col">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr key="search">
-                <th colSpan="6">
-                  <input className="searchInput" type="text" onChange={this.searchActivities().bind(this)} placeholder="Search Title, Author or Type" />
-                </th>
-              </tr>
-            {this.props.activities.sort((a, b) => a.date < b.date ? 1 : -1).map((activity, index) =>
-              <tr key={'activity' + index}>
-                <td>{activity.date}</td>
-                <td>{activity.author}</td>
-                <td>{activity.type}</td>
-                <td>{activity.title}</td>
-                <td>{this.links(index, activity.links)}</td>
-                <td>
-                  <button type="button" className="btn btn-sm btn-secondary" onClick={this.delete(activity).bind(this)}>
-                    <span className="fa fa-trash"></span>
-                  </button>
-                </td>
-              </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+  return (
+    <div>
+      <Menu selected="list"></Menu>
+      <div className="table-responsive">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col" className="date">Date</th>
+              <th scope="col">Author</th>
+              <th scope="col">Type</th>
+              <th scope="col">Title</th>
+              <th scope="col">Links</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr key="search">
+              <th colSpan="6">
+                <input className="searchInput" type="text" onChange={searchActivities()} placeholder="Search Title, Author or Type" />
+              </th>
+            </tr>
+          {props.activities.sort((a, b) => a.date < b.date ? 1 : -1).map((activity, index) =>
+            <tr key={'activity' + index}>
+              <td>{activity.date}</td>
+              <td>{activity.author}</td>
+              <td>{activity.type}</td>
+              <td>{activity.title}</td>
+              <td>{links(index, activity.links)}</td>
+              <td>
+                <button type="button" className="btn btn-sm btn-secondary" onClick={del(activity)}>
+                  <span className="fa fa-trash"></span>
+                </button>
+              </td>
+            </tr>
+            )}
+          </tbody>
+        </table>
       </div>
-    );
-  }
+    </div>
+  )
 }
 
 export default ListPage;
