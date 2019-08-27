@@ -1,5 +1,5 @@
-import React, { useEffect, Component } from 'react';
-import Menu from './Menu';
+import React, { useEffect } from 'react'
+import Menu from './Menu'
 import { deleteActivity } from './lib/activity-repository'
 
 const ListPage = (props) => {

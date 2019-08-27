@@ -1,127 +1,124 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import Menu from './Menu'
-import axios from 'axios'
 import { withRouter } from "react-router-dom"
-import { apiBaseUrl } from './lib/configuration'
+import { addActivity } from './lib/activity-repository'
 
-class ListPage extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            type: 'facilitation',
-            links: [{url: "http://an.url", type: "wiki"}]
-        }
-    }
+const AddPage = (props) => {
+  const [links, setLinks] = useState([{url: "http://an.url", type: "wiki"}])
+  const [type, setType] = useState('facilitation')
+  const [date, setDate] = useState('')
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
 
-    addLink() {
-        this.setState((prevState) => ({
-            links: [...prevState.links, {url:"", type:""}],
+  const addLink = () => {
+    setLinks([...links, {url:"", type:""}])
+  }
+
+  const updateLink = (id, type) => {
+      return (event) => {
+        setLinks(links.map((link, index) => {
+          if (index === id) {
+              link[type] = event.target.value
+          }
+          return link
         }))
-    }
+      }
+  }
 
-    updateLink(id, type) {
-        return (event) => {
-            this.setState({
-                links: this.state.links.map((link, index) => {
-                    if (index === id) {
-                        link[type] = event.target.value
-                    }
-                    return link
-                })
-            })
-        }
-    }
+  const changeTitle = (event) => {
+    setTitle(event.target.value)
+  }
 
-    change(item) {
-        return (event) => {
-            let newState = {}
-            newState[item] = event.target.value
-            this.setState(newState)
-        }
-    }
+  const changeAuthor = (event) => {
+    setAuthor(event.target.value)
+  }
 
-    submit(event) {
-        event.preventDefault()
+  const changeDate = (event) => {
+    setDate(event.target.value)
+  }
 
-        axios.post(`${apiBaseUrl}/save`, this.state)
-            .then(() => {
-              //TODO: ok response
-              this.props.activityAdded(this.state)
+  const changeType = (event) => {
+    setType(event.target.value)
+  }
 
-              this.props.history.push('/')
-            })
-            .catch(console.log)
-    }
+  const submit = (event) => {
+    event.preventDefault()
 
-    render() {
-        return (
-            <div>
-                <Menu selected="add"></Menu>
-                <form className="text-left p-3" onSubmit={this.submit.bind(this)}>
-                    <div className="form-group">
-                        <label htmlFor="date">Date</label>
-                        <input type="text" onChange={this.change("date")} className="form-control" placeholder="yyyy-MM-dd" />
+    addActivity({author, title, links, date, type})
+      .then(() => {
+        props.activityAdded({author, title, links, date, type})
+        props.history.push('/')
+      })
+      .catch(console.log)
+  }
+
+  return (
+    <div>
+      <Menu selected="add"></Menu>
+      <form className="text-left p-3" onSubmit={submit}>
+          <div className="form-group">
+              <label htmlFor="date">Date</label>
+              <input type="text" onChange={changeDate} className="form-control" placeholder="yyyy-MM-dd" />
+          </div>
+          <div className="form-group">
+              <label htmlFor="author">Author</label>
+              <input type="text" onChange={changeAuthor} className="form-control" placeholder="Author" />
+          </div>
+          <div className="form-group">
+              <label htmlFor="type">Type</label>
+              <select onChange={changeType} className="form-control">
+                  <option value="facilitation">facilitation</option>
+                  <option value="presentation">presentation</option>
+                  <option value="conference">conference</option>
+              </select>
+          </div>
+          <div className="form-group">
+              <label htmlFor="title">Title</label>
+              <input type="text" onChange={changeTitle} className="form-control" placeholder="Title" />
+          </div>
+          <div className="text-right">
+            <button className="btn btn-sm btn-secondary" type="button" onClick={addLink}>Add Link</button>
+          </div>
+          {links.map((link, idx) => {
+              let typeId = `type-${idx}`
+              let urlId = `url-${idx}`
+
+              return (
+
+                <div className="row p-3" key={idx}>
+                    <div className="col-sm-6">
+                        <label htmlFor={typeId}>Type</label>
+                        <input
+                            type="text"
+                            name={typeId}
+                            data-id={idx}
+                            id={typeId}
+                            className="form-control"
+                            value={links[idx].type}
+                            onChange={updateLink(idx, "type")}
+                        />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="author">Author</label>
-                        <input type="text" onChange={this.change("author")} className="form-control" placeholder="Author" />
+                    <div className="col-sm-6">
+                        <label htmlFor={urlId}>Url</label>
+                        <input
+                        type="text"
+                        name={urlId}
+                        data-id={idx}
+                        id={urlId}
+                        className="form-control"
+                        value={links[idx].url}
+                        onChange={updateLink(idx, 'url')}
+                        />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="type">Type</label>
-                        <select onChange={this.change("type")} className="form-control">
-                            <option value="facilitation">facilitation</option>
-                            <option value="presentation">presentation</option>
-                            <option value="conference">conference</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="title">Title</label>
-                        <input type="text" onChange={this.change("title")} className="form-control" placeholder="Title" />
-                    </div>
-                    <div className="text-right">
-                      <button className="btn btn-sm btn-secondary" type="button" onClick={this.addLink.bind(this)}>Add Link</button>
-                    </div>
-                    {this.state.links.map((link, idx) => {
-                        let typeId = `type-${idx}`
-                        let urlId = `url-${idx}`
+                </div>
+              )
+          })}
 
-                        return (
-
-                          <div className="row p-3" key={idx}>
-                              <div className="col-sm-6">
-                                  <label htmlFor={typeId}>Type</label>
-                                  <input
-                                      type="text"
-                                      name={typeId}
-                                      data-id={idx}
-                                      id={typeId}
-                                      className="form-control"
-                                      value={this.state.links[idx].type}
-                                      onChange={this.updateLink(idx, "type").bind(this)}
-                                  />
-                              </div>
-                              <div className="col-sm-6">
-                                  <label htmlFor={urlId}>Url</label>
-                                  <input
-                                  type="text"
-                                  name={urlId}
-                                  data-id={idx}
-                                  id={urlId}
-                                  className="form-control"
-                                  value={this.state.links[idx].url}
-                                  onChange={this.updateLink(idx, 'url').bind(this)}
-                                  />
-                              </div>
-                          </div>
-                        )
-                    })}
-
-                    <button type="submit" className="btn btn-primary">Save</button>
-                </form>
-            </div>
-        )
-    }
+          <button type="submit" className="btn btn-primary">Save</button>
+      </form>
+    </div>
+  )
 }
 
-export default withRouter(ListPage)
+export default withRouter(AddPage)
 
