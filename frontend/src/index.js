@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import ListPage from './ListPage'
@@ -6,61 +6,36 @@ import RankingPage from './RankingPage'
 import AddPage from './AddPage'
 import * as serviceWorker from './serviceWorker'
 import { Route, BrowserRouter } from 'react-router-dom'
-import { listActivities } from './lib/activity-repository'
+import { listActivities, searchActivities } from './lib/activity-repository'
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'search':
+      return { activities: state.activities, filtered: searchActivities(action.value, state.activities) }
+    case 'list':
+      return { activities: action.value, filtered: action.value}
+    case 'add':
+      return { activities: [...state.activities, action.value], filtered: [...state.activities, action.value]}
+    case 'delete':
+      return { activities: action.value, filtered: action.value}
+    default:
+      return state;
+  }
+}
 
 const App = () => {
-  const [activities, setActivities] = useState([])
-  const [filtered, setFiltered] = useState([])
-
-  const getActivities = () => {
-    listActivities()
-      .then((data) => {
-        setActivities(data)
-        setFiltered(data)
-      })
-  }
-
-  function isNot(activityToDelete) {
-    return (activity) => {
-      return !(activityToDelete.date === activity.date &&
-            activityToDelete.author === activity.author &&
-            activityToDelete.title === activity.title &&
-            activityToDelete.type === activity.type)
-    }
-  }
-
-  function searchActivities(text) {
-    setFiltered(activities.filter(hasTitleOrAuthorOrTypeContaining(text)))
-  }
-
-  function hasTitleOrAuthorOrTypeContaining(text) {
-    return (activity) => {
-      return (activity.title && activity.title.toLowerCase().includes(text.toLowerCase())) ||
-             (activity.author && activity.author.toLowerCase().includes(text.toLowerCase())) ||
-             (activity.type && activity.type.toLowerCase().includes(text.toLowerCase()))
-    }
-  }
-
-  function activityDeleted(activity) {
-    setActivities(activities.filter(isNot(activity)))
-    setFiltered(activities.filter(isNot(activity)))
-  }
-
-  function activityAdded(activity) {
-    setActivities([...activities, activity])
-    setFiltered([...activities, activity])
-  }
+  const [state, dispatch] = useReducer(reducer, { activities: [], filtered: [] })
 
   useEffect(() => {
-    getActivities()
+    listActivities().then((activities) => dispatch({ type: 'list', value: activities})).catch(console.log)
   }, [])
 
   return (
       <BrowserRouter basename={process.env.PUBLIC_URL}>
           <div className='router a1'>
-              <Route exact path="/" render={() => <ListPage activityDeleted={activityDeleted} searchActivities={searchActivities} activities={filtered}/>}/>
-              <Route exact path="/ranking" render={() => <RankingPage activities={activities}/>} />
-              <Route exact path="/add" render={() => <AddPage activityAdded={activityAdded} activities={activities}/>} />
+              <Route exact path="/" render={() => <ListPage dispatch={dispatch} activities={state.filtered}/>}/>
+              <Route exact path="/ranking" render={() => <RankingPage activities={state.activities}/>} />
+              <Route exact path="/add" render={() => <AddPage dispatch={dispatch} activities={state.activities}/>} />
           </div>
       </BrowserRouter>
     )

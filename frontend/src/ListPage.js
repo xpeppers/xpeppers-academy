@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react'
 import Menu from './Menu'
-import { deleteActivity } from './lib/activity-repository'
+import { deleteActivity, listActivities } from './lib/activity-repository'
 
 const ListPage = (props) => {
 
   useEffect(() => {
-    props.searchActivities('')
+    listActivities()
+    .then((activities) => {
+      props.dispatch({ type: 'list', value: activities})
+    }).catch(console.log)
   }, [])
 
   const links = (index, links) => {
@@ -21,19 +24,14 @@ const ListPage = (props) => {
     return (event) => {
       event.preventDefault()
 
-      deleteActivity(activity)
-        .then(() => {
-          props.activityDeleted(activity)
-        })
-        .catch(console.log)
+      deleteActivity(activity, props.activities)
+      .then(activities => props.dispatch({ type: 'delete', value: activities }))
     }
   }
 
-  const searchActivities = () => {
-    return (event) => {
-      event.preventDefault()
-      props.searchActivities(event.target.value)
-    }
+  const searchActivities = (event) => {
+    event.preventDefault()
+    props.dispatch({ type: 'search', value: event.target.value })
   }
 
   return (
@@ -54,7 +52,7 @@ const ListPage = (props) => {
           <tbody>
             <tr key="search">
               <th colSpan="6">
-                <input className="searchInput" type="text" onChange={searchActivities()} placeholder="Search Title, Author or Type" />
+                <input className="searchInput" type="text" onChange={searchActivities} placeholder="Search Title, Author or Type" />
               </th>
             </tr>
           {props.activities.sort((a, b) => a.date < b.date ? 1 : -1).map((activity, index) =>

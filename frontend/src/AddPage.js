@@ -45,11 +45,11 @@ const AddPage = (props) => {
     event.preventDefault()
 
     addActivity({author, title, links, date, type})
-      .then(() => {
-        props.activityAdded({author, title, links, date, type})
-        props.history.push('/')
-      })
-      .catch(console.log)
+    .then((activity) => {
+      props.dispatch({ type: 'add', value: activity })
+      props.history.push('/')
+    })
+    .catch(console.log)
   }
 
   return (
