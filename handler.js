@@ -1,33 +1,12 @@
 'use strict'
 
-const aws = require('aws-sdk')
-const promiseFs = require('promise-filesystem')
+const { activities } = require('./lib/repositories')
+
 const HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': true,
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Credentials': true
-}
-
-function bucket () {
-  return process.env.BUCKET_NAME;
-}
-
-function fileSystem () {
-  return process.env.RUN_LOCALLY === 'true' ? promiseFs() : promiseFs(aws.S3)
-}
-
-function extractData (document) {
-  return (document.Body) ? document.Body.toString() : []
-}
-
-function readActivities () {
-  return fileSystem().read(bucket(), 'data.json').then(extractData)
-}
-
-function saveActivities (data) {
-  return fileSystem().write(bucket(), 'data.json', JSON.stringify(data))
-      .then(() => '')
 }
 
 function isNot (activityToDelete) {
@@ -52,32 +31,32 @@ function ok (data) {
 }
 
 module.exports.save = (event) => {
-  return readActivities()
+  return activities.read()
   .then(asJson)
   .then((data) => {
     if (!event.body) return
 
     data.push(JSON.parse(event.body))
-    return saveActivities(data)
+    return activities.save(data)
   })
   .then(ok)
   .catch(error)
 }
 
 module.exports.read = () => {
-  return readActivities()
+  return activities.read()
   .then(ok)
   .catch(error)
 }
 
 module.exports.delete = (event) => {
-  return readActivities()
+  return activities.read()
   .then(asJson)
   .then((data) => {
     if (!event.body) return
     let activity = JSON.parse(event.body)
 
-    return saveActivities(data.filter(isNot(activity)))
+    return activities.save(data.filter(isNot(activity)))
   })
   .then(ok)
   .catch(error)
