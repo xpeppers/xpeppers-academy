@@ -33,25 +33,25 @@ provider:
         Fn::Join: ['', [Fn::GetAtt: [ XpeppersAcademyBucket, Arn ], '/*'] ]
 
 functions:
-  save:
-    handler: handler.save
+  activitiesSave:
+    handler: activities.save
     events:
       - http:
-          path: /save
+          path: /activities
           method: post
           cors: true
-  read:
-    handler: handler.read
+  activitiesRead:
+    handler: activities.read
     events:
       - http:
-          path: /read
+          path: /activities
           method: get
           cors: true
-  delete:
-    handler: handler.delete
+  activitiesDelete:
+    handler: activities.delete
     events:
       - http:
-          path: /delete
+          path: /activities/delete
           method: post
           cors: true
 resources:

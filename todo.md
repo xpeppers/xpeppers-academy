@@ -1,5 +1,10 @@
 # TODO
 
+- [] Library
+    - [] List of all books available with title, author, location, tags(?)
+    - [] Search books
+    - [] Take-home
+    - [] List of read books per user (requires authentication)
 - [] Some sort of authentication (already asked credentials to Claranet Fr)
      - [SSO Azure](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow)
      - Other resources for OAuth2:
@@ -17,3 +22,7 @@
 - [] Slack integration to notify next presentation and notify done presentation
 - [] More gamification (badge for n° points, etc...)
 - [] Make only cloudfront public (restrict s3 Bucket Policy to only cloudfront zones)
+
+# Technical debt
+
+- [] Make activities DELETE RestFul

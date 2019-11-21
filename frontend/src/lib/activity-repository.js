@@ -19,6 +19,6 @@ function hasTitleOrAuthorOrTypeContaining(text) {
 }
 
 export const searchActivities = (text, activities) => activities.filter(hasTitleOrAuthorOrTypeContaining(text))
-export const listActivities = () => axios.get(`${apiBaseUrl}/read`).then(({data}) => data)
-export const addActivity = (activity) => axios.post(`${apiBaseUrl}/save`, activity).then(() => activity)
-export const deleteActivity = (activity, activities) => axios.post(`${apiBaseUrl}/delete`, activity).then(data => activities.filter(isNot(activity)))
+export const listActivities = () => axios.get(`${apiBaseUrl}/activities`).then(({data}) => data)
+export const addActivity = (activity) => axios.post(`${apiBaseUrl}/activities`, activity).then(() => activity)
+export const deleteActivity = (activity, activities) => axios.post(`${apiBaseUrl}/activities/delete`, activity).then(data => activities.filter(isNot(activity)))
