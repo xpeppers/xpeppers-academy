@@ -1,6 +1,6 @@
 'use strict'
 
-const { activities } = require('./lib/repositories')
+const { Repository } = require('./lib/repository')
 
 const HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -30,34 +30,44 @@ function ok (data) {
   return { statusCode: 200, body: data, headers: HEADERS}
 }
 
-module.exports.save = (event) => {
-  return activities.read()
+function saveTo(file, event) {
+  let repository = new Repository(file)
+  return repository.read()
   .then(asJson)
   .then((data) => {
     if (!event.body) return
 
     data.push(JSON.parse(event.body))
-    return activities.save(data)
+    return repository.save(data)
   })
   .then(ok)
   .catch(error)
 }
 
-module.exports.read = () => {
-  return activities.read()
+function readFrom(file) {
+  return new Repository(file).read()
   .then(ok)
   .catch(error)
 }
 
-module.exports.delete = (event) => {
-  return activities.read()
+function deleteFrom(file, event) {
+  let repository = new Repository(file)
+  return repository.read()
   .then(asJson)
   .then((data) => {
     if (!event.body) return
-    let activity = JSON.parse(event.body)
+    let item = JSON.parse(event.body)
 
-    return activities.save(data.filter(isNot(activity)))
+    return repository.save(data.filter(isNot(item)))
   })
   .then(ok)
   .catch(error)
 }
+
+module.exports.saveActivity = (event) => saveTo('data.json', event)
+module.exports.readActivity = () => readFrom('data.json')
+module.exports.deleteActivity = (event) => deleteFrom('data.json', event)
+
+module.exports.saveLibrary = (event) => saveTo('library.json', event)
+module.exports.readLibrary = () => readFrom('library.json')
+module.exports.deleteLibrary = (event) => deleteFrom('library.json', event)

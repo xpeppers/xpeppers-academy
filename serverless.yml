@@ -34,24 +34,45 @@ provider:
 
 functions:
   activitiesSave:
-    handler: activities.save
+    handler: handler.saveActivity
     events:
       - http:
           path: /activities
           method: post
           cors: true
   activitiesRead:
-    handler: activities.read
+    handler: handler.readActivity
     events:
       - http:
           path: /activities
           method: get
           cors: true
   activitiesDelete:
-    handler: activities.delete
+    handler: handler.deleteActivity
     events:
       - http:
           path: /activities/delete
+          method: post
+          cors: true
+  librarySave:
+    handler: handler.saveLibrary
+    events:
+      - http:
+          path: /library
+          method: post
+          cors: true
+  libraryRead:
+    handler: handler.readLibrary
+    events:
+      - http:
+          path: /library
+          method: get
+          cors: true
+  libraryDelete:
+    handler: handler.deleteLibrary
+    events:
+      - http:
+          path: /library/delete
           method: post
           cors: true
 resources:
