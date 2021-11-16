@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.422.0",
+    "aws-sdk": "^2.814.0",
     "promise-filesystem": "^1.0.1"
   },
   "devDependencies": {
